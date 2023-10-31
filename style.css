@@ -1,7 +1,18 @@
 .tetris-container {
-  display: flex;
+    display: flex;
 }
+
 .tetris-left {
-  display: flex;
-  flex-wrap: wrap;
+    background-color: #141414;
+
+    width: 200px;
+    height: 400px;
+
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.tetris-left div {
+    width: 20px;
+    height: 20px;
 }
