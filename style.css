@@ -1,0 +1,7 @@
+.tetris-container {
+  display: flex;
+}
+.tetris-left {
+  display: flex;
+  flex-wrap: wrap;
+}
