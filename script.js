@@ -22,5 +22,5 @@ document.addEventListener("DOMContentLoaded", () => {
   const iBlock = [[], [], [], []];
 
   // Put the 5 variable on the top with 1 variables (theTetromnioes)
-  const theTetromnioes = [];
+  const theTetrominoes = [];
 });
