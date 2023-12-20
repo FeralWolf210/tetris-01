@@ -16,3 +16,7 @@
     width: 20px;
     height: 20px;
 }
+
+.tetromino-color {
+    background-color: greenyellow;
+}
