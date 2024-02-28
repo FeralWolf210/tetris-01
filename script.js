@@ -1,7 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
   let squares = Array.from(document.querySelectorAll(".tetris-left div"));
+  let startBtn = document.getElementById("startBtn");
+  let scoreDisplay = document.getElementById("scoreDisplay");
   let width = 10;
-  // today
+  // today 21
   let nextRandom = 0;
 
   // j Block and Rotation
@@ -111,31 +113,9 @@ document.addEventListener("DOMContentLoaded", () => {
         squares[startPosition + index].classList.add("taken")
       );
 
-      // random = nextRandom; // today
-      // nextRandom = Math.floor(Math.random() * theTetrominoes.length); // today
-
+      nextRandom = Math.floor(Math.random() * theTetrominoes.length); // today 21
+      random = nextRandom; // today 21
       // ?. Bagaimana cara membuat si tetris nya respawn ke bawah
-      random = Math.floor(Math.random() * theTetrominoes.length);
-      current = theTetrominoes[random][currentRotation];
-      startPosition = 4;
-      draw();
-      // displayShape();
-    }
-  }
-
-  //freeze function
-  function freeze() {
-    if (
-      current.some((index) =>
-        squares[startPosition + index + width].classList.contains("taken")
-      )
-    ) {
-      current.forEach((index) =>
-        squares[startPosition + index].classList.add("taken")
-      );
-      //start a new tetromino falling
-      random = nextRandom;
-      nextRandom = Math.floor(Math.random() * theTetrominoes.length);
       current = theTetrominoes[random][currentRotation];
       startPosition = 4;
       draw();
@@ -207,8 +187,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // theTetromioes without rotations
   const upNextTetrominoes = [
-    [1, displayWidth + 1, displayWidth * 2 + 1, 2],
-    [0, displayWidth, displayWidth + 1, displayWidth * 2 + 1],
+    [1, displayWidth + 1, displayWidth * 2 + 1, 2], // 1 5 9 2
+    [0, displayWidth, displayWidth + 1, displayWidth * 2 + 1], //0 4 5 9
     [1, displayWidth, displayWidth + 1, displayWidth + 2],
     [0, 1, displayWidth, displayWidth + 1],
     [1, displayWidth + 1, displayWidth * 2 + 1, displayWidth * 3 + 1],
