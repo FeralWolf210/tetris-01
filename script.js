@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let width = 10;
   // today 21
   let nextRandom = 0;
+  let score = 0;
 
   // j Block and Rotation
   let jBlock = [
@@ -48,8 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Put the 5 variable on the top with 1 variables (theTetromnioes)
   let theTetrominoes = [jBlock, zBlock, tBlock, sBlock, iBlock];
-
-  console.log(theTetrominoes[4][0]);
 
   // Here's how to show shape with color from what we makes on the top (array)
   let startPosition = 4;
@@ -113,13 +112,14 @@ document.addEventListener("DOMContentLoaded", () => {
         squares[startPosition + index].classList.add("taken")
       );
 
-      nextRandom = Math.floor(Math.random() * theTetrominoes.length); // today 21
       random = nextRandom; // today 21
+      nextRandom = Math.floor(Math.random() * theTetrominoes.length); // today 21
       // ?. Bagaimana cara membuat si tetris nya respawn ke bawah
       current = theTetrominoes[random][currentRotation];
       startPosition = 4;
       draw();
       displayShape();
+      addScore(); //today 28
     }
   }
 
@@ -149,7 +149,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Ngecek kalau misalkan posisinya dari index di foto bukan ujung kanan maka disetting bisa geser kanan
   function moveRight() {
-    console.log(startPosition);
     unDraw();
     const isAtRightEdge = current.some(
       (index) => (startPosition + index) % width === width - 1
@@ -205,4 +204,51 @@ document.addEventListener("DOMContentLoaded", () => {
       displaySquares[displayIndex + index].classList.add("tetromino-color");
     });
   }
+
+  // Add Functionality to the button
+  startBtn.addEventListener("click", () => {
+    // Check if timerId is not null (0)
+    if (timerId) {
+      clearInterval(timerId); // reset variable timerId
+      timerId = null; // set timerId menjadi null
+      // console.log(timerId, "timerId");
+    } else {
+      draw();
+      timerId = setInterval(moveDown, 1000);
+      nextRandom = Math.floor(Math.random() * theTetrominoes.length);
+      displayShape();
+    }
+  });
+
+  // function addScore() {
+  //   // kenapa 199 -> Jumlah Kotak
+  //   for (let i = 0; i < 199; i += width) {
+  //     const row = [
+  //       i,
+  //       i + 1,
+  //       i + 2,
+  //       i + 3,
+  //       i + 4,
+  //       i + 5,
+  //       i + 6,
+  //       i + 7,
+  //       i + 8,
+  //       i + 9,
+  //     ];
+  //     if (row.every((index) => squares[index].classList.contains("taken"))) {
+  //       score += 10;
+  //       scoreDisplay.innerHTML = score;
+  //       row.forEach((index) => {
+  //         squares[index].classList.remove("taken");
+  //       });
+  //       const squaresRemoved = squares.splice(i, width);
+  //       // console.log(squaresRemoved);
+  //       squares = squaresRemoved.concat(squares);
+  //       squares.forEach((cell) => grid.appendChild(cell));
+  //     }
+  //   }
+  // }
+
+  // concat -> untuk menggabungkan 2 array tetris jadi satu (a-z)
+  // appendchild -> sama, bedanya kita pake buat HTML
 });
