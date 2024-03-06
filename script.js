@@ -1,11 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
   let squares = Array.from(document.querySelectorAll(".tetris-left div"));
+  let grid = document.querySelector(".tetris-left");
   let startBtn = document.getElementById("startBtn");
   let scoreDisplay = document.getElementById("scoreDisplay");
   let width = 10;
   // today 21
   let nextRandom = 0;
   let score = 0;
+  const colors = ["orang", "red", "green", "purple", "blue"]; // color tetromino
 
   // j Block and Rotation
   let jBlock = [
@@ -60,6 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function draw() {
     current.forEach((index) => {
       squares[startPosition + index].classList.add("tetromino-color");
+      squares[startPosition + index].style.backgroundColor = colors[random]; // color tetromino
     });
   }
 
@@ -67,6 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function unDraw() {
     current.forEach((index) => {
       squares[startPosition + index].classList.remove("tetromino-color");
+      squares[startPosition + index].style.backgroundColor = ""; // color tetromino
     });
   }
 
@@ -120,6 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
       draw();
       displayShape();
       addScore(); //today 28
+      gameOver(); //today 5.
     }
   }
 
@@ -198,10 +203,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // remove any trace of a tetromino form the entire grid
     displaySquares.forEach((square) => {
       square.classList.remove("tetromino-color");
+      square.style.backgroundColor = ""; // color tetromino
     });
 
     upNextTetrominoes[nextRandom].forEach((index) => {
       displaySquares[displayIndex + index].classList.add("tetromino-color");
+      displaySquares[displayIndex + index].style.backgroundColor =
+        colors[nextRandom]; // color tetromino
     });
   }
 
@@ -220,35 +228,64 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // function addScore() {
-  //   // kenapa 199 -> Jumlah Kotak
-  //   for (let i = 0; i < 199; i += width) {
-  //     const row = [
-  //       i,
-  //       i + 1,
-  //       i + 2,
-  //       i + 3,
-  //       i + 4,
-  //       i + 5,
-  //       i + 6,
-  //       i + 7,
-  //       i + 8,
-  //       i + 9,
-  //     ];
-  //     if (row.every((index) => squares[index].classList.contains("taken"))) {
-  //       score += 10;
-  //       scoreDisplay.innerHTML = score;
-  //       row.forEach((index) => {
-  //         squares[index].classList.remove("taken");
-  //       });
-  //       const squaresRemoved = squares.splice(i, width);
-  //       // console.log(squaresRemoved);
-  //       squares = squaresRemoved.concat(squares);
-  //       squares.forEach((cell) => grid.appendChild(cell));
-  //     }
-  //   }
-  // }
+  function addScore() {
+    // kenapa 199 -> Jumlah Kotak
+    for (let i = 0; i < 199; i += width) {
+      const row = [
+        // baris kiri ke kanan berjumlah 10
+        i,
+        i + 1,
+        i + 2,
+        i + 3,
+        i + 4,
+        i + 5,
+        i + 6,
+        i + 7,
+        i + 8,
+        i + 9,
+      ];
+      // console.log(row);
 
-  // concat -> untuk menggabungkan 2 array tetris jadi satu (a-z)
-  // appendchild -> sama, bedanya kita pake buat HTML
+      // remove the row from the squares
+      if (row.every((index) => squares[index].classList.contains("taken"))) {
+        // jika 10 row nya penuh (contains taken class)
+        score += 10;
+        scoreDisplay.innerHTML = score; //score ditambah 10 & dimasukkan ke variable score
+        row.forEach((index) => {
+          squares[index].classList.remove("taken");
+          squares[index].classList.remove("tetromino-color");
+          squares[index].style.backgroundColor = "";
+        }); // kalau sudah penuh 10 row bawah maka di remove kelas taken nya (warna ijo)
+        const squaresRemoved = squares.splice(i, width); // remove baris paling bawah dengan cara .splice
+        squares = squaresRemoved.concat(squares);
+        squares.forEach((cell) => grid.appendChild(cell));
+      }
+    }
+  }
+
+  // splice -> untuk slice array per item
+  var planets = ["Mars", "Saturn", "Pluto", "Venus"];
+  // for (let i = 0; i < 10; i++) {
+  //   console.log(planets[i]);
+  // }
+  // console.log(planets.splice(2, 2)); //params 1 startIndex, params ke 2 deleteCount
+  // console.log(planets);
+
+  // concat -> untuk menggabungkan 2 array tetris jadi satu urutannya (a-z)
+  // https://www.w3schools.com/jsref/jsref_concat_array.asp
+
+  // https://www.w3schools.com/jsref/met_node_appendchild.asp
+  // appendchild -> sama kaya concat, bedanya kita pake di HTML
+
+  function gameOver() {
+    // Jika salah satu bentuk tetris ini mengandung kelas taken
+    if (
+      current.some((index) =>
+        squares[startPosition + index].classList.contains("taken")
+      )
+    ) {
+      scoreDisplay.innerHTML = "end";
+      clearInterval(timerId);
+    }
+  }
 });

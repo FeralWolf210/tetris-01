@@ -33,6 +33,12 @@
   height: 20px;
 }
 
+.score h1 {
+  margin: 5px;
+}
+button#startBtn {
+  margin-bottom: 10px;
+}
 .tetromino-color {
-    background-color: greenyellow;
+  background-color: greenyellow;
 }
